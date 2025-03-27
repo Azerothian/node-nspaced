@@ -1,19 +1,3 @@
-# @azerothian/nspaced
-
-Drop in replacement for [cls-hooked](https://github.com/Jeff-Lewis/cls-hooked) * seems to be dead and has not been updated in a very long time, 
-
-## TODO
-
-Look at bind/context setting, atm bind only binds it to the current context,
-
-
-
-This is using [AsyncLocalStorage](https://github.com/nodejs/node/blob/main/doc/api/async_context.md#class-asynclocalstorage) instead of [async_hooks](https://github.com/nodejs/node/blob/main/doc/api/async_hooks.md)
-
-It uses a Map to store the values and will clone the parent map when run is called.
-
-
-```typescript
 import { createNamespace, getNamespace } from "../src";
 
 const writer = createNamespace('writer');
@@ -62,9 +46,3 @@ function requestHandler() {
     bindTest(); // prints 2
   }, 1000);
 }
-
-
-```
-
-## Class: Namespaced
-
