@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from "node:async_hooks";
 
-class Namespaced {
+export class Namespaced {
   store: AsyncLocalStorage<Map<string, any>>;
   constructor() {
     this.store = new AsyncLocalStorage<Map<string, any>>();
@@ -17,6 +17,7 @@ class Namespaced {
   set<T = any>(key: string, value: T) {
     return this.store.getStore()?.set(key, value);
   }
+
   run(callback: (val: Map<string, any>) => void | Promise<void>): Map<string, any> | Promise<Map<string, any>> {
     const currentMap = this.store.getStore();
     const newMap = new Map<string, any>(currentMap);
@@ -25,10 +26,12 @@ class Namespaced {
       return newMap;
     });
   }
-  runAndReturn<T = any>(callback: (val: Map<string, any>) => T | Promise<T>): T | Promise<T> {
+  runAndReturn<T = any, T1 = T>(callback: (val: Map<string, any>) => T1): T1 extends Promise<T> ? Promise<T> : T {
     const currentMap = this.store.getStore();
     const newMap = new Map<string, any>(currentMap);
-    return this.store.run(newMap, callback, newMap);
+    // not sure why as any is needed here
+    // but it is needed to make the types work
+    return this.store.run<T1,  any[]>(newMap, callback, newMap) as any;
   }
   bind(callback: () => any) {
     return AsyncLocalStorage.bind(callback);
