@@ -1,20 +1,17 @@
 {
   "name": "@azerothian/nspaced",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "cjs/index.js",
   "types": "lib/index.d.ts",
   "module": "lib/index.js",
   "type": "module",
-  "exports": {
-    "import": "./lib/index.js",
-    "require": "./cjs/index.js"
-  },
   "files": [
     "**/*"
   ],
   "scripts": {
     "package:yalc": "pnpm run build && cd publish && yalc publish",
+    "package:npm": "pnpm run build; cd publish; npm publish --access public",
     "build": "rm -Rf ./publish || true; mkdir ./publish && run-p build:*",
     "build:readme": "cp ./README.md ./publish/README.md",
     "build:src": "copyfiles -u 1 \"src/**/*\" publish/src",
